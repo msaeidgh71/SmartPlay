@@ -42,6 +42,7 @@ def rotation_matrix(v1, v2):
 
 def describe_loc(ref, P):
     desc = []
+    details = []
     if ref[1] > P[1]:
         desc.append("north")
     elif ref[1] < P[1]:
@@ -51,7 +52,33 @@ def describe_loc(ref, P):
     elif ref[0] < P[0]:
         desc.append("east")
 
-    return "-".join(desc)
+    if len(desc) == 2:
+        if ref[1] > P[1]:
+            details.append(f"{ref[1] - P[1]} step to the north")
+        elif ref[1] < P[1]:
+            details.append(f"{P[1] - ref[1]} step to the south")
+        if ref[0] > P[0]:
+            details.append(f"{ref[0] - P[0]} step to the west")
+        elif ref[0] < P[0]:
+            details.append(f"{P[0] - ref[0]} step to the east")
+        pass
+        
+    elif len(desc) == 1:
+        if ref[1] > P[1]:
+            details.append(f"{ref[1] - P[1]} step to the north")
+        elif ref[1] < P[1]:
+            details.append(f"{P[1] - ref[1]} step to the south")
+        if ref[0] > P[0]:
+            details.append(f"{ref[0] - P[0]} step to the west")
+        elif ref[0] < P[0]:
+            details.append(f"{P[0] - ref[0]} step to the east")
+        pass
+
+    
+    tmp = "-".join(desc)
+    tmp2 = " and ".join(details)
+
+    return tmp2
 
 
 def describe_env(info):
@@ -71,15 +98,18 @@ def describe_env(info):
     target = id_to_item[semantic[target]]
     obs = "You face {} at your front.".format(target, describe_loc(np.array([0,0]),facing))
     
+
+    #print(loc)
+
     for idx in np.unique(semantic):
         if idx==player_idx:
             continue
 
         smallest = np.unravel_index(np.argmin(np.where(semantic==idx, dist, np.inf)), semantic.shape)
-        obj_info_list.append((id_to_item[idx], dist[smallest], describe_loc(np.array([0,0]), smallest-center)))
+        obj_info_list.append((id_to_item[idx], dist[smallest], describe_loc(np.array([0,0]), smallest-center) ) )
 
     if len(obj_info_list)>0:
-        status_str = "You see:\n{}".format("\n".join(["- {} {} steps to your {}".format(name, dist, loc) for name, dist, loc in obj_info_list]))
+        status_str = "You see:\n{}".format("\n".join(["- {} {}".format(name, loc) for name, dist, loc in obj_info_list]))
     else:
         status_str = "You see nothing away from you."
     result += status_str + "\n\n"
