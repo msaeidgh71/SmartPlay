@@ -40,7 +40,7 @@ def rotation_matrix(v1, v2):
     rotation_matrix = np.array([[dot, -cross],[cross, dot]])
     return rotation_matrix
 
-def describe_loc(ref, P):
+def describe_loc(ref, P, noFacing=True):
     desc = []
     details = []
     if ref[1] > P[1]:
@@ -78,6 +78,16 @@ def describe_loc(ref, P):
     tmp = "-".join(desc)
     tmp2 = " and ".join(details)
 
+    if noFacing == False:
+        if "north" in tmp2:
+            return "north"
+        if "south" in tmp2:
+            return "south"
+        if "west" in tmp2:
+            return "west"
+        if "east" in tmp2:
+            return "east"
+        pass
     return tmp2
 
 
@@ -96,7 +106,7 @@ def describe_env(info):
     facing = info['player_facing']
     target = (center[0] + facing[0], center[1] + facing[1])
     target = id_to_item[semantic[target]]
-    obs = "You face {} at your front.".format(target, describe_loc(np.array([0,0]),facing))
+    obs = "You face {} at your front. your facing is: {}".format(target, describe_loc(np.array([0,0]),facing, False))
     
 
     #print(loc)
@@ -155,7 +165,8 @@ def describe_frame(info, action):
         result+=describe_inventory(info)
         
         return result.strip()
-    except:
+    except Exception as e:
+        print(e)
         return "Error, you are out of the map."
 
 class Crafter(Env):
@@ -164,6 +175,9 @@ class Crafter(Env):
     default_steps = 10000
 
     def __init__(self, area=(64, 64), view=(9, 9), size=(64, 64), reward=True, length=10000, seed=None, max_steps=2):
+        print("************")
+        print(seed)
+        print("************")
         self.history = HistoryTracker(max_steps)
         self.action_list = ["Noop", "Move West", "Move East", "Move North", "Move South", "Do", \
     "Sleep", "Place Stone", "Place Table", "Place Furnace", "Place Plant", \
