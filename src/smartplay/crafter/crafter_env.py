@@ -194,8 +194,11 @@ class Crafter(Env):
         CTXT = CTXT.replace("Move Left: Flat ground left to the agent.", "Move West: Flat ground west of the agent.")
         CTXT = CTXT.replace("Move Right: Flat ground right to the agent.", "Move East: Flat ground east of the agent.")
 
-        CTXT = CTXT.replace("21. Wake Up to start the episode.", "21. Wake Up to start the episode.\n22. In the game, we don't have actions like collecting wood, drinking water, or mining diamonds. We only have one action, 'Do' which if it's on a tile adjacent to and facing water, means drinking, if it's wood, it means collecting wood, and if it's diamond, it means mining diamonds.")
+        
+        CTXT = CTXT.replace("21. Wake Up to start the episode.", "21. Wake Up to start the episode.\n22. In the game, we dont have actions like collecting wood, drinking water, or mining diamonds. We only have one action, Do which if its on a tile adjacent to and facing water, means drinking, if its wood, it means collecting wood, and if its diamond, it means mining diamonds.")
         CTXT = CTXT.replace("5. Do: Facing creature or material; have necessary tool.", "5. Do: Facing creature or material; have necessary tool; they must be facing you and one tile away from you.")
+        
+        
         self.desc = CTXT
         self.score_tracker = 0
         super().__init__(area, view, size, reward, length, seed)
