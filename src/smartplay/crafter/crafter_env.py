@@ -196,7 +196,7 @@ class Crafter(Env):
 
         
         CTXT = CTXT.replace("21. Wake Up to start the episode.", "21. Wake Up to start the episode.\n22. In the game, we dont have actions like collecting wood, drinking water, or mining diamonds. We only have one action, Do which if its on a tile adjacent to and facing water, means drinking, if its wood, it means collecting wood, and if its diamond, it means mining diamonds.")
-        CTXT = CTXT.replace("5. Do: Facing creature or material; have necessary tool.", "5. Do: Facing creature or material; have necessary tool; they must be facing you and one tile away from you.")
+        CTXT = CTXT.replace("5. Do: Facing creature or material; have necessary tool.", "5. Do: Facing creature or material; have necessary tool; they must be facing you and one tile away from you. facing means that it is exactly on the left tile, right tile, north tile, or south tile. Other coordinates, such as northeast or southwest, are not accepted.")
         
         
         self.desc = CTXT
